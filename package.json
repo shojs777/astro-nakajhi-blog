@@ -12,7 +12,13 @@
   "dependencies": {
     "@astrojs/check": "^0.5.6",
     "@astrojs/cloudflare": "^9.1.0",
+    "@astrojs/tailwind": "^5.1.0",
+    "@spearly/sdk-js": "^2.0.2",
     "astro": "^4.4.15",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.4.2"
+  },
+  "devDependencies": {
+    "daisyui": "^4.7.3"
   }
 }

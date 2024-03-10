@@ -1,6 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import {apiClient} from '../lib/spearly';
+const fetchBlogData = async () => {
+const data=await apiClient.getList("sample-post")
+return data
+};
+const res=await fetchBlogData()
+const blogData=res.data.map((content)=>content.values)
+console.log(blogData)
 ---
 
 <Layout title="Welcome to Astro.">
@@ -33,12 +41,15 @@ import Card from '../components/Card.astro';
 				</linearGradient>
 			</defs>
 		</svg>
-		<h1> to <span class="text-gradient">Asto</span></h1>
+		<h1 class="text-rose-500"> to <span class="text-gradient text-rose-500">Asto</span></h1>
 		<p class="instructions">
 			To get started, open the directory <code>src/pages</code> in your project.<br />
 			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
 		</p>
 		<ul role="list" class="link-card-grid">
+			{blogData.map((blog) => (
+			<Fragment set:html={blog.body} />
+			))}
 			<Card
 				href="https://docs.astro.build/"
 				title="Documentation"
