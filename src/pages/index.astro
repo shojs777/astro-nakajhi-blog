@@ -1,21 +1,46 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import PostCard from "../components/PostCard.astro";
-import { apiClient } from "../lib/spearly";
+import Layout from "@layouts/Layout.astro";
+import PostCard from "@components/PostCard.astro";
+import { apiClient } from "@lib/spearly";
+
+let isForwardDisabled = true;
+let isBackDisabled = true;
+let pageNum = 1;
+const perPage = 10;
 const fetchBlogData = async () => {
-  const data = await apiClient.getList("sample-post");
+  const data = await apiClient.getList("sample-post", {
+    limit: perPage,
+    offset: 1 + (pageNum - 1) * perPage,
+  });
   return data;
 };
 const res = await fetchBlogData();
-const blogData = res.data.map((content) => content.values);
-console.log(blogData);
+const blogData = res.data;
+console.log(res);
+// if(){
+
+// }
 ---
 
-<Layout title="Welcome to Astro.">
-  <main>
-    <PostCard />
-    <!-- <ul role="list" class="link-card-grid">
-      {blogData.map((blog) => <Fragment set:html={blog.body} />)}
-    </ul> -->
+<Layout title="ブログ記事一覧">
+  <main
+    class="w-full flex flex-wrap flex-row gap-8 m-auto justify-center border-2 border-white p-6"
+  >
+    {
+      blogData.map((blog) => (
+        <PostCard
+          title={blog.values.title as string}
+          imgUrl={blog.values.image}
+          tags={blog.values.tag}
+          href={`posts/${blog.attributes.publicUid}`}
+          updatedAt={blog.attributes.updatedAt}
+        />
+      ))
+    }
   </main>
+  <div class="join my-6 flex justify-center">
+    <button class="join-item btn btn-lg" disabled={isBackDisabled}>«</button>
+    <button class="join-item btn btn-lg">{pageNum}</button>
+    <button class="join-item btn btn-lg" disabled={isForwardDisabled}>»</button>
+  </div>
 </Layout>

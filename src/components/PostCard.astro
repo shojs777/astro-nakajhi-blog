@@ -1,29 +1,33 @@
 ---
-// interface Props {
-//   title: string;
-//   body: string;
-//   href: string;
-// }
+import { format } from "date-fns";
+type Props = {
+  href?: string;
+  title: string;
+  imgUrl: string;
+  body: string;
+  tags: string[];
+  updatedAt: Date;
+};
 
-// const { href, title, body } = Astro.props;
+const { href, title, imgUrl, updatedAt, tags } = Astro.props;
 ---
 
-<div class="card w-96 bg-base-100 shadow-xl">
+<a class="card w-80 bg-base-100 shadow-xl cursor-pointer" href={href}>
   <figure>
-    <img
-      src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-      alt="Shoes"
-    />
+    <img src={imgUrl} alt="Shoes" />
   </figure>
-  <div class="card-body">
+  <div class="card-body p-4 min-h-36">
     <h2 class="card-title">
-      Shoes!
-      <div class="badge badge-secondary">NEW</div>
+      {title}
     </h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <div class="badge badge-secondary">NEW</div>
+
+    <div class="text-xs text-right">
+      更新日：{format(updatedAt, "yyyy/MM/dd HH:mm")}
+    </div>
+
     <div class="card-actions justify-end">
-      <div class="badge badge-outline">Fashion</div>
-      <div class="badge badge-outline">Products</div>
+      {tags.map((tag) => <div class="badge badge-outline">{tag}</div>)}
     </div>
   </div>
-</div>
+</a>

@@ -15,6 +15,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@spearly/sdk-js": "^2.0.2",
     "astro": "^4.4.15",
+    "date-fns": "^3.4.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.2"
   },

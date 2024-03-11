@@ -1,6 +1,11 @@
 ---
 import Header from "./components/Header.astro";
 import Footer from "./components/Footer.astro";
+
+type Props = {
+  title: string;
+};
+
 const { title } = Astro.props;
 ---
 
@@ -11,16 +16,18 @@ const { title } = Astro.props;
   </head>
   <body>
     <Header />
-    <div class="grid grid-cols-4 gap-4 min-h-screen">
-      <h1>{title}</h1>
-      <div class="col-start-1 col-span-1">
-        <slot name="aside1" /><!-- ここにサイドバーが挿入される -->
-      </div>
-      <div class="col-start-2 col-span-2 row-span-full">
-        <slot /><!-- ここにコンテンツが挿入される -->
-      </div>
-      <div class="col-span-1">
-        <slot name="aside2" /><!-- ここにサイドバーが挿入される -->
+    <div class="py-24 px-6">
+      <h2 class="text-center text-6xl font-mono mb-12">{title}</h2>
+      <div class="grid grid-cols-4 gap-4 min-h-screen">
+        <div class="col-start-1 col-span-1">
+          <slot name="aside1" /><!-- ここにサイドバーが挿入される -->
+        </div>
+        <div class="col-start-2 col-span-2 row-span-full">
+          <slot /><!-- ここにコンテンツが挿入される -->
+        </div>
+        <div class="col-span-1">
+          <slot name="aside2" /><!-- ここにサイドバーが挿入される -->
+        </div>
       </div>
     </div>
     <Footer />
