@@ -1,10 +1,9 @@
 ---
 import { format } from "date-fns";
 type Props = {
-  href?: string;
+  href: string;
   title: string;
   imgUrl: string;
-  body: string;
   tags: string[];
   updatedAt: Date;
 };
@@ -12,22 +11,26 @@ type Props = {
 const { href, title, imgUrl, updatedAt, tags } = Astro.props;
 ---
 
-<a class="card w-80 bg-base-100 shadow-xl cursor-pointer" href={href}>
-  <figure>
-    <img src={imgUrl} alt="Shoes" />
-  </figure>
-  <div class="card-body p-4 min-h-36">
-    <h2 class="card-title">
-      {title}
-    </h2>
-    <div class="badge badge-secondary">NEW</div>
+<div
+  class="card w-full md:w-[calc((100%_-_48px)_/_2)] bg-base-100 shadow-xl cursor-pointer"
+>
+  <a href={href}>
+    <figure>
+      <img src={imgUrl} alt="Shoes" />
+    </figure>
+    <div class="card-body p-4 min-h-36">
+      <h2 class="card-title">
+        {title}
+      </h2>
+      <div class="badge badge-secondary">NEW</div>
 
-    <div class="text-xs text-right">
-      更新日：{format(updatedAt, "yyyy/MM/dd HH:mm")}
-    </div>
+      <div class="text-xs text-right">
+        更新日：{format(updatedAt, "yyyy/MM/dd")}
+      </div>
 
-    <div class="card-actions justify-end">
-      {tags.map((tag) => <div class="badge badge-outline">{tag}</div>)}
+      <div class="card-actions justify-end">
+        {tags.map((tag) => <div class="badge badge-outline">{tag}</div>)}
+      </div>
     </div>
-  </div>
-</a>
+  </a>
+</div>

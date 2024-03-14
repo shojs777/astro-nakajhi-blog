@@ -1,7 +1,45 @@
 ---
+import type { GetStaticPathsResult } from "astro";
+import { format } from "date-fns";
+import { fetchPostsData } from "@lib/spearly";
 import Layout from "@layouts/Layout.astro";
+type PageProps = {
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+  img: string;
+  tags: string[];
+  body: string;
+};
+type Props = PageProps;
+
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+  const res = await fetchPostsData();
+  return res.data.map(({ values, attributes }) => ({
+    params: { postId: attributes.publicUid },
+    props: {
+      title: values.title,
+      createdAt: attributes.createdAt,
+      updatedAt: attributes.updatedAt,
+      img: values.image,
+      tags: values.tag,
+      body: values.body,
+    } as PageProps,
+  }));
+}
+
+const { title, createdAt, updatedAt, img, tags, body } = Astro.props;
+console.log(Astro.props);
 ---
 
-<Layout title="Post">
-  <div>postページ</div>
+<Layout title={title}>
+  <div>
+    <p>投稿日: {format(createdAt, "yyyy/MM/dd")}</p>
+    <p>更新日: {format(updatedAt, "yyyy/MM/dd")}</p>
+    <img src={img} alt={title} />
+    <ul>
+      {tags.map((tag) => <li class="badge badge-outline">{tag}</li>)}
+    </ul>
+    <!-- <div set:html={body} /> -->
+  </div>
 </Layout>
