@@ -1,5 +1,5 @@
 ---
-import type { GetStaticPathsResult } from "astro";
+import type { GetStaticPaths, GetStaticPathsResult } from "astro";
 import { format } from "date-fns";
 import { fetchPostsData } from "@lib/spearly";
 import Layout from "@layouts/Layout.astro";
@@ -13,7 +13,7 @@ type PageProps = {
 };
 type Props = PageProps;
 
-export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetchPostsData();
   return res.data.map(({ values, attributes }) => ({
     params: { postId: attributes.publicUid },
@@ -24,22 +24,31 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
       img: values.image,
       tags: values.tag,
       body: values.body,
-    } as PageProps,
+    },
   }));
-}
+};
 
 const { title, createdAt, updatedAt, img, tags, body } = Astro.props;
 console.log(Astro.props);
 ---
 
 <Layout title={title}>
-  <div>
-    <p>投稿日: {format(createdAt, "yyyy/MM/dd")}</p>
-    <p>更新日: {format(updatedAt, "yyyy/MM/dd")}</p>
-    <img src={img} alt={title} />
-    <ul>
-      {tags.map((tag) => <li class="badge badge-outline">{tag}</li>)}
-    </ul>
-    <!-- <div set:html={body} /> -->
+  <div
+    class="flex flex-col lg:flex-row my-0 m-auto max-w-7xl px-0 sm:px-10 justify-between gap-4"
+  >
+    <main
+      class="w-full lg:w-[calc(100%_-_330px)] flex flex-wrap flex-col justify-center border-2 border-white px-5 sm:px-10"
+    >
+      <p>投稿日: {format(createdAt, "yyyy/MM/dd")}</p>
+      <p>更新日: {format(updatedAt, "yyyy/MM/dd")}</p>
+      <img src={img} alt={title} />
+      <ul>
+        {tags.map((tag) => <li class="badge badge-outline">{tag}</li>)}
+      </ul>
+      <!-- <div set:html={body} /> -->
+    </main>
+    <div class="w-full lg:w-[300px] border-2 border-white">
+      広告かプロフィール <!-- ここにサイドバーが挿入される -->
+    </div>
   </div>
 </Layout>

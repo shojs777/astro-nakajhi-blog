@@ -1,0 +1,58 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PostCard from "@components/PostCard.astro";
+import { fetchPostsData } from "@lib/spearly";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const res = await fetchPostsData();
+  const allpPost = res.data;
+  console.log(res.data.length);
+  return paginate(allpPost, { pageSize: 10 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const isForwardDisabled = page.url.next ? false : true;
+const isBackDisabled = page.url.prev ? false : true;
+console.log(isBackDisabled, page.url.prev);
+---
+
+<Layout title="ブログ記事一覧">
+  <div
+    class="grid grid-cols-1 sm:gap-4 min-h-screen sm:grid-cols-3 xl:grid-cols-4"
+  >
+    <div class="col-start-3 col-span-1 xl:col-start-1">
+      <!-- ここにサイドバーが挿入される -->
+    </div>
+    <div
+      class="col-start-1 col-span-2 xl:col-start-2 xl:col-span-2 row-span-full"
+    >
+      <main
+        class="w-full flex flex-wrap flex-row gap-8 m-auto justify-center border-2 border-white p-6"
+      >
+        {
+          page.data.map(({ values, attributes }) => (
+            <PostCard
+              title={values.title as string}
+              imgUrl={values.image as string}
+              tags={values.tag as string[]}
+              href={`posts/${attributes.publicUid}`}
+              updatedAt={attributes.updatedAt}
+            />
+          ))
+        }
+      </main>
+      <div class="join flex justify-center mt-8">
+        <button class="join-item btn btn-lg" disabled={isBackDisabled}
+          ><a href={page.url.prev}>«</a></button
+        >
+        <button class="join-item btn btn-lg">Page {page.currentPage}</button>
+        <button class="join-item btn btn-lg" disabled={isForwardDisabled}
+          ><a href={page.url.next}>»</a></button
+        >
+      </div>
+
+      <div class="col-span-1"><!-- ここにサイドバーが挿入される --></div>
+    </div>
+  </div>
+</Layout>
