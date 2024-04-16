@@ -1,9 +1,11 @@
 ---
-import type { GetStaticPaths, GetStaticPathsResult } from "astro";
+import type { GetStaticPaths } from "astro";
 // import { Image } from "astro:assets";
 import { format } from "date-fns";
 import { fetchPostsData } from "@lib/spearly";
 import Layout from "@layouts/Layout.astro";
+import Aside from "@components/Aside.astro";
+
 type PageProps = {
   title: string;
   createdAt: Date;
@@ -34,30 +36,33 @@ console.log(Astro.props);
 ---
 
 <Layout>
-  <div class="text-sm breadcrumbs">
-    <ul>
-      <li><a>Home</a></li>
-      <li><a>Documents</a></li>
-      <li>記事詳細</li>
-    </ul>
-  </div>
   <div
-    class="flex flex-col lg:flex-row my-0 m-auto max-w-7xl px-0 sm:px-10 justify-between gap-4"
+    class="relative flex flex-col lg:flex-row my-0 m-auto max-w-7xl px-0 sm:px-10 justify-between gap-10"
   >
+    <div class="absolute top-[-40px] left-10 text-sm breadcrumbs">
+      <ul>
+        <li><a href="/">投稿一覧</a></li>
+        <li>投稿詳細</li>
+      </ul>
+    </div>
     <main
       class="w-full lg:w-[calc(100%_-_330px)] flex flex-wrap flex-col justify-center border-2 border-white"
     >
       <!-- <Image
-        class="h-[30vh] object-cover"
-        src={img}
-        width={870}
-        height={400}
-        alt="記事のサムネイル画像"
+      class="h-[30vh] object-cover"
+      src={img}
+      width={870}
+      height={400}
+      alt="記事のサムネイル画像"
       /> -->
-      <img class="h-[30vh] object-cover" src={img} alt="記事のサムネイル画像" />
-      <div class="px-5 sm:px-10">
-        <h1 class="mt-10 text-4xl font-bold">{title}</h1>
-        <div class="mt-10">
+      <img
+        class="h-[30vh] max-h-[300px] object-cover"
+        src={img}
+        alt="記事のサムネイル画像"
+      />
+      <div class="w-full px-5 py-10 sm:px-10">
+        <h1 class="text-4xl font-bold">{title}</h1>
+        <div class="mt-4">
           <span
             >投稿: <span class="tracking-wider">
               {format(createdAt, "yyyy/MM/dd")}</span
@@ -76,11 +81,10 @@ console.log(Astro.props);
             ))
           }
         </ul>
-        <div class="mt-10" set:html={body} />
+        <div class="mt-16" set:html={body} />
       </div>
     </main>
-    <Fragment class="w-full lg:w-[300px] border-2 border-white">
-      <!-- <Sidebar /> -->
-    </Fragment>
+    <Fragment class="w-full lg:w-[300px] border-2 border-white"></Fragment>
+    <Aside />
   </div>
 </Layout>

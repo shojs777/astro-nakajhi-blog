@@ -10,6 +10,6 @@ export default defineConfig({
   integrations: [tailwind()],
   image: {
     // 例: リモート画像の最適化を単一のドメインに対して許可する
-    domains: ["static.spearly.com"],
+    // domains: ["static.spearly.com"],
   },
 });

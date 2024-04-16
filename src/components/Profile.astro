@@ -1,0 +1,16 @@
+---
+import { Image } from "astro:assets";
+import profileImg from "../static/images/profile.png";
+import AsideCard from "./AsideCard.astro";
+---
+
+<AsideCard title="プロフィール">
+  <Image
+    class="rounded-full w-[160px] mx-auto"
+    src={profileImg}
+    alt="プロフィール画像"
+    width={250}
+    height={250}
+  />
+  <div><p class="text-center text-xl mt-2">経歴</p><p>本文</p></div>
+</AsideCard>

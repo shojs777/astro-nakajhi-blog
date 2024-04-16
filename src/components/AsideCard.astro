@@ -1,0 +1,26 @@
+---
+type Props = {
+  title?: string;
+  classList?: string[];
+};
+
+const { title, classList } = Astro.props;
+
+const isClassList = classList?.length;
+let classObj: { [key: string]: true };
+if (isClassList) {
+  classObj = classList.reduce((obj, key) => {
+    obj[key] = true;
+    return obj;
+  }, {});
+} else {
+  classObj = { "h-96": !isClassList };
+}
+console.log(classObj);
+---
+
+<!-- 動的クラス -->
+<div class:list={["w-full border-2 border-white p-5", classObj]}>
+  {title && <div class="text-center text-2xl mb-5">{title}</div>}
+  <slot />
+</div>
