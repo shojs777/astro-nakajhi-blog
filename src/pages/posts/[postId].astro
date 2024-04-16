@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths, GetStaticPathsResult } from "astro";
+import { Image } from "astro:assets";
 import { format } from "date-fns";
 import { fetchPostsData } from "@lib/spearly";
 import Layout from "@layouts/Layout.astro";
@@ -32,23 +33,53 @@ const { title, createdAt, updatedAt, img, tags, body } = Astro.props;
 console.log(Astro.props);
 ---
 
-<Layout title={title}>
+<Layout>
+  <div class="text-sm breadcrumbs">
+    <ul>
+      <li><a>Home</a></li>
+      <li><a>Documents</a></li>
+      <li>記事詳細</li>
+    </ul>
+  </div>
   <div
     class="flex flex-col lg:flex-row my-0 m-auto max-w-7xl px-0 sm:px-10 justify-between gap-4"
   >
     <main
-      class="w-full lg:w-[calc(100%_-_330px)] flex flex-wrap flex-col justify-center border-2 border-white px-5 sm:px-10"
+      class="w-full lg:w-[calc(100%_-_330px)] flex flex-wrap flex-col justify-center border-2 border-white"
     >
-      <p>投稿日: {format(createdAt, "yyyy/MM/dd")}</p>
-      <p>更新日: {format(updatedAt, "yyyy/MM/dd")}</p>
-      <img src={img} alt={title} />
-      <ul>
-        {tags.map((tag) => <li class="badge badge-outline">{tag}</li>)}
-      </ul>
-      <!-- <div set:html={body} /> -->
+      <Image
+        class="h-[30vh] object-cover"
+        src={img}
+        width={870}
+        height={400}
+        alt="記事のサムネイル画像"
+      />
+      <div class="px-5 sm:px-10">
+        <h1 class="mt-10 text-4xl font-bold">{title}</h1>
+        <div class="mt-10">
+          <span
+            >投稿: <span class="tracking-wider">
+              {format(createdAt, "yyyy/MM/dd")}</span
+            >
+          </span>
+          <span class="ml-2"
+            >更新: <span class="tracking-wider">
+              {format(updatedAt, "yyyy/MM/dd")}
+            </span>
+          </span>
+        </div>
+        <ul class="mt-2">
+          {
+            tags.map((tag) => (
+              <li class="badge badge-outline badge-lg ">{tag}</li>
+            ))
+          }
+        </ul>
+        <div class="mt-10" set:html={body} />
+      </div>
     </main>
-    <div class="w-full lg:w-[300px] border-2 border-white">
-      広告かプロフィール <!-- ここにサイドバーが挿入される -->
-    </div>
+    <Fragment class="w-full lg:w-[300px] border-2 border-white">
+      <!-- <Sidebar /> -->
+    </Fragment>
   </div>
 </Layout>
