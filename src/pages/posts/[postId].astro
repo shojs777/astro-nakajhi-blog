@@ -32,14 +32,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { title, createdAt, updatedAt, img, tags, body } = Astro.props;
-console.log(Astro.props);
 ---
 
 <Layout>
   <div
     class="relative flex flex-col lg:flex-row my-0 m-auto max-w-7xl px-0 sm:px-10 justify-between gap-10"
   >
-    <div class="absolute top-[-40px] left-10 text-sm breadcrumbs">
+    <div class="absolute top-[-40px] left-2 sm:left-10 text-sm breadcrumbs">
       <ul>
         <li><a href="/">投稿一覧</a></li>
         <li>投稿詳細</li>
