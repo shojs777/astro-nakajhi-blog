@@ -16,11 +16,10 @@ if (isClassList) {
 } else {
   classObj = { "h-96": !isClassList };
 }
-console.log(classObj);
 ---
 
 <!-- 動的クラス -->
-<div class:list={["w-full border-2 border-white p-5", classObj]}>
+<div class:list={["w-full p-5 bg-gray-200", classObj]}>
   {title && <div class="text-center text-2xl mb-5">{title}</div>}
   <slot />
 </div>
