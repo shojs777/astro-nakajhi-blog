@@ -4,7 +4,8 @@ import type { GetStaticPaths } from "astro";
 import { format } from "date-fns";
 import { fetchPostsData } from "@lib/spearly";
 import Layout from "@layouts/Layout.astro";
-import Aside from "@components/Aside.astro";
+import TagList from "@components/TagList.astro";
+import Profile from "../profile.astro";
 
 type PageProps = {
   title: string;
@@ -13,11 +14,17 @@ type PageProps = {
   img: string;
   tags: string[];
   body: string;
+  tagList: string[];
 };
 type Props = PageProps;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetchPostsData();
+  const duplicatedTagList = res.data
+    .map(({ values }) => values.tag as string[])
+    .flatMap((tagList) => tagList);
+  const tagList = [...new Set(duplicatedTagList)];
+
   return res.data.map(({ values, attributes }) => ({
     params: { postId: attributes.publicUid },
     props: {
@@ -27,11 +34,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
       img: values.image,
       tags: values.tag,
       body: values.body,
+      tagList,
     },
   }));
 };
 
-const { title, createdAt, updatedAt, img, tags, body } = Astro.props;
+const { title, createdAt, updatedAt, img, tags, body, tagList } = Astro.props;
 ---
 
 <Layout>
@@ -83,7 +91,15 @@ const { title, createdAt, updatedAt, img, tags, body } = Astro.props;
         <div class="mt-16" set:html={body} />
       </div>
     </main>
-    <Fragment class="w-full lg:w-[300px] border-2 border-white"></Fragment>
-    <Aside />
+
+    <aside
+      class="w-full lg:max-w-[290px] flex flex-col border-2 border-white gap-4"
+    >
+      <Profile />
+      <TagList tagList={tagList} />
+      <!-- <div class="w-full h-96 border-2 border-white">
+    <div class="text-center text-2xl">広告</div><div></div>
+  </div> -->
+    </aside>
   </div>
 </Layout>
