@@ -1,31 +1,39 @@
 ---
-import Layout from "@layouts/Layout.astro";
 import PostCard from "@components/PostCard.astro";
-import { fetchPostsData } from "@lib/spearly";
-import type { GetStaticPaths } from "astro";
 import Profile from "@components/Profile.astro";
 import TagList from "@components/TagList.astro";
+import Layout from "@layouts/Layout.astro";
+import { fetchPostsData } from "@lib/spearly";
+import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const res = await fetchPostsData();
-  const allpPost = res.data;
-  return paginate(allpPost, { pageSize: 10 });
+  const allPosts = res.data;
+  const duplicatedTagList = allPosts
+    .map(({ values }) => values.tag as string[])
+    .flatMap((tagList) => tagList);
+  const uniqueTagList = [...new Set(duplicatedTagList)];
+
+  return uniqueTagList.flatMap((tag) => {
+    const filteredPosts = allPosts.filter((post) =>
+      (post.values.tag as string[])?.includes(tag),
+    );
+    return paginate(filteredPosts, {
+      params: {
+        tag,
+      },
+      pageSize: 10,
+    });
+  });
 }) satisfies GetStaticPaths;
 
+const params = Astro.params;
 const { page } = Astro.props;
 const isForwardDisabled = page.url.next ? false : true;
 const isBackDisabled = page.url.prev ? false : true;
-// console.log(
-//   page.data.map(({ values }) => values.tag).flatMap((tagList) => tagList),
-// );
-const duplicatedTagList = page.data
-  .map(({ values }) => values.tag as string[])
-  .flatMap((tagList) => tagList);
-
-const uniqueTagList = [...new Set(duplicatedTagList)];
 ---
 
-<Layout title="ブログ記事一覧">
+<Layout title={`${params.tag}タグを含む記事`}>
   <div
     class="grid grid-cols-1 min-h-screen sm:grid-cols-[1fr,250px] sm:grid-rows-[auto,1fr] xl:grid-cols-[250px,1fr,250px] 2xl:grid-cols-[300px,1fr,300px] max-w-[2000px] mx-auto gap-8 md:gap-x-4 xl:gap-8"
   >
@@ -34,6 +42,7 @@ const uniqueTagList = [...new Set(duplicatedTagList)];
     >
       <Profile />
     </div>
+    <p>{params.tag}のタグが付いた記事</p>
     <div
       class="col-start-1 col-span-1 xl:col-start-2 xl:col-span-1 row-span-full"
     >
@@ -62,10 +71,9 @@ const uniqueTagList = [...new Set(duplicatedTagList)];
         >
       </div>
     </div>
-    <div
+    <!-- <div
       class="row-start-3 col-start-1 sm:col-start-2 col-span-1 sm:row-start-2 xl:col-start-3 xl:row-start-1"
     >
-      <TagList tagList={uniqueTagList} />
-    </div>
+    </div> -->
   </div>
 </Layout>

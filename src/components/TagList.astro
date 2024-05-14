@@ -4,14 +4,18 @@ type Props = {
 };
 
 const { tagList } = Astro.props;
-
-console.log(tagList);
 ---
 
 <div class="w-full p-5 bg-gray-200 min-h-[100px]">
   <div class="text-center text-2xl mb-5">タグ一覧</div>
   <ul class="flex flex-wrap gap-3">
-    {tagList.map((tag) => <li class="badge badge-primary">{tag}</li>)}
+    {
+      tagList.map((tag) => (
+        <li class="badge badge-primary">
+          <a href={`/${tag}`}>{tag}</a>
+        </li>
+      ))
+    }
 
     <!-- <li class="badge badge-secondary">テスト</li>
     <li class="badge badge-accent">テスト</li> -->
