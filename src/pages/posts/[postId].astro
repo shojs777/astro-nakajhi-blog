@@ -7,7 +7,7 @@ import Layout from "@layouts/Layout.astro";
 import TagList from "@components/TagList.astro";
 import Profile from "../profile.astro";
 
-type PageProps = {
+type Props = {
   title: string;
   createdAt: Date;
   updatedAt: Date;
@@ -16,7 +16,6 @@ type PageProps = {
   body: string;
   tagList: string[];
 };
-type Props = PageProps;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetchPostsData();
