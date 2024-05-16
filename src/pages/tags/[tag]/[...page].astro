@@ -1,7 +1,7 @@
 ---
 import PostCard from "@components/PostCard.astro";
 import Profile from "@components/Profile.astro";
-import TagList from "@components/TagList.astro";
+// import TagList from "@components/TagList.astro";
 import Layout from "@layouts/Layout.astro";
 import { fetchPostsData } from "@lib/spearly";
 import type { GetStaticPaths } from "astro";
@@ -42,10 +42,16 @@ const isBackDisabled = page.url.prev ? false : true;
     >
       <Profile />
     </div>
-    <p>{params.tag}のタグが付いた記事</p>
+    広告など
     <div
-      class="col-start-1 col-span-1 xl:col-start-2 xl:col-span-1 row-span-full"
+      class="relative col-start-1 col-span-1 xl:col-start-2 xl:col-span-1 row-span-full"
     >
+      <div class="absolute top-[-40px] left-2 sm:left-0 text-sm breadcrumbs">
+        <ul>
+          <li>タグ一覧</li>
+          <li>{params.tag}</li>
+        </ul>
+      </div>
       <main
         class="w-full flex flex-wrap flex-row bg-gray-200 xl:p-6 gap-4 2xl:gap-8 md:gap-4 p-5"
       >
