@@ -1,11 +1,11 @@
 ---
 import type { GetStaticPaths } from "astro";
-// import { Image } from "astro:assets";
+import { Image } from "astro:assets";
 import { format } from "date-fns";
 import { fetchPostsData } from "@lib/spearly";
 import Layout from "@layouts/Layout.astro";
 import TagList from "@components/TagList.astro";
-import Profile from "../profile.astro";
+import Profile from "@components/Profile.astro";
 
 type Props = {
   title: string;
@@ -54,18 +54,18 @@ const { title, createdAt, updatedAt, img, tags, body, tagList } = Astro.props;
     <main
       class="w-full lg:w-[calc(100%_-_330px)] flex flex-wrap flex-col justify-center border-2 border-white"
     >
-      <!-- <Image
-      class="h-[30vh] object-cover"
-      src={img}
-      width={870}
-      height={400}
-      alt="記事のサムネイル画像"
-      /> -->
-      <img
+      <Image
+        class="h-[30vh] object-cover"
+        src={img}
+        width={870}
+        height={400}
+        alt="記事のサムネイル画像"
+      />
+      <!-- <img
         class="h-[30vh] max-h-[300px] object-cover"
         src={img}
         alt="記事のサムネイル画像"
-      />
+      /> -->
       <div class="w-full px-5 py-10 sm:px-10">
         <h1 class="text-4xl font-bold">{title}</h1>
         <div class="mt-4">
