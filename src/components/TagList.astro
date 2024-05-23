@@ -11,7 +11,7 @@ const { tagList } = Astro.props;
   <ul class="flex flex-wrap gap-3">
     {
       tagList.map((tag) => (
-        <li class="badge badge-primary">
+        <li class="badge badge-primary min-w-20 min-h-8 font-bold text-gray-200">
           <a href={`/tags/${tag}`}>{tag}</a>
         </li>
       ))

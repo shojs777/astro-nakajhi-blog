@@ -1,33 +1,46 @@
 ---
-import { format } from "date-fns";
+import { format, differenceInCalendarDays } from "date-fns";
+import { Image } from "astro:assets";
 type Props = {
   href: string;
   title: string;
   imgUrl?: string;
   tags: string[];
   updatedAt: Date;
+  createdAt: Date;
 };
 
-const { href, title, imgUrl, updatedAt, tags } = Astro.props;
+const { href, title, imgUrl, updatedAt, tags, createdAt } = Astro.props;
+const RECENT_DAY = 30;
+const isRecentPost =
+  differenceInCalendarDays(new Date(), new Date(createdAt)) < RECENT_DAY;
 ---
 
 <div
   class="card w-full md:w-[calc((100%_-_(16px_*_1))_/_2)] 2xl:w-[calc((100%_-_(32px_*_2))_/_3)] bg-base-100 shadow-xl cursor-pointer rounded-lg"
 >
   <a href={href}>
-    <figure>
-      <img class="rounded-t-lg object-cover" src={imgUrl} alt="Shoes" />
-    </figure>
+    {
+      imgUrl && (
+        <figure>
+          <Image
+            class="rounded-t-lg object-cover aspect-video"
+            src={imgUrl}
+            width={717}
+            height={224}
+            alt="投稿サムネイル"
+          />
+        </figure>
+      )
+    }
     <div class="card-body p-4 min-h-36">
       <h2 class="card-title">
         {title}
       </h2>
-      <div class="badge badge-secondary">NEW</div>
-
+      {isRecentPost && <div class="badge badge-secondary">NEW</div>}
       <div class="text-xs text-right">
         更新日：{format(updatedAt, "yyyy/MM/dd")}
       </div>
-
       <div class="card-actions justify-end">
         {tags.map((tag) => <div class="badge badge-outline">{tag}</div>)}
       </div>

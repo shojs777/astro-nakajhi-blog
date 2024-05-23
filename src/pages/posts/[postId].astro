@@ -47,7 +47,7 @@ const { title, createdAt, updatedAt, img, tags, body, tagList } = Astro.props;
   >
     <div class="absolute top-[-40px] left-2 sm:left-10 text-sm breadcrumbs">
       <ul>
-        <li><a href="/">投稿一覧</a></li>
+        <li><a href="/">ホーム</a></li>
         <li>投稿詳細</li>
       </ul>
     </div>
@@ -55,11 +55,11 @@ const { title, createdAt, updatedAt, img, tags, body, tagList } = Astro.props;
       class="w-full lg:w-[calc(100%_-_330px)] flex flex-wrap flex-col justify-center border-2 border-white"
     >
       <Image
-        class="h-[30vh] object-cover"
+        class="h-[30vh] object-cover w-full"
         src={img}
-        width={870}
-        height={400}
-        alt="記事のサムネイル画像"
+        width={717}
+        height={224}
+        alt=""
       />
       <!-- <img
         class="h-[30vh] max-h-[300px] object-cover"

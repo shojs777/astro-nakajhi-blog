@@ -48,6 +48,7 @@ const uniqueTagList = [...new Set(duplicatedTagList)];
               tags={values.tag as string[]}
               href={`/posts/${attributes.publicUid}`}
               updatedAt={attributes.updatedAt}
+              createdAt={attributes.createdAt}
             />
           ))
         }

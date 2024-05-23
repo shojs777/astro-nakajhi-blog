@@ -48,6 +48,7 @@ const isBackDisabled = page.url.prev ? false : true;
     >
       <div class="absolute top-[-40px] left-2 sm:left-0 text-sm breadcrumbs">
         <ul>
+          <li><a href="/">ホーム</a></li>
           <li>タグ一覧</li>
           <li>{params.tag}</li>
         </ul>
@@ -63,6 +64,7 @@ const isBackDisabled = page.url.prev ? false : true;
               tags={values.tag as string[]}
               href={`/posts/${attributes.publicUid}`}
               updatedAt={attributes.updatedAt}
+              createdAt={attributes.createdAt}
             />
           ))
         }
