@@ -3,6 +3,55 @@ import Layout from "@layouts/Layout.astro";
 ---
 
 <Layout title="お問い合わせ">
-  <div>pxページ</div>
+  <div class="w-full min-h-[80vh]">
+    <form id="contact-form">
+      <input type="hidden" name="contact_number" />
+      <label>お名前</label>
+      <input type="text" name="user_name" />
+      <label>メール</label>
+      <input type="email" name="user_email" />
+      <label>お問い合わせ内容</label>
+      <textarea name="message"></textarea>
+      <input type="submit" value="
+        送信" />
+    </form>
+  </div>
 </Layout>
-<script is:inline></script>
+<script
+  is:inline
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+></script>
+<script is:inline type="text/javascript">
+  (function () {
+    emailjs.init({
+      publicKey: "Q09UWwZ_b5D4dLRzy",
+      // limitRate: {
+      //   id: "app",
+      //   // Allow 1 request per 10s
+      //   throttle: 10000,
+      // },
+    });
+  })();
+</script>
+<script is:inline type="text/javascript">
+  window.onload = function () {
+    document
+      .getElementById("contact-form")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        console.log(this);
+        // generate a five digit number for the contact_number variable
+        this.contact_number.value = (Math.random() * 100000) | 0;
+        // these IDs from the previous steps
+        emailjs.sendForm("service_i4hpsnb", "template_vcdbm8l", this).then(
+          function () {
+            console.log("SUCCESS!");
+          },
+          function (error) {
+            console.log("FAILED...", error);
+          },
+        );
+      });
+  };
+</script>
