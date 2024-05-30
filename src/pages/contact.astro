@@ -1,10 +1,16 @@
 ---
+import Alert from "@components/Alert.astro";
 import Layout from "@layouts/Layout.astro";
 ---
 
 <Layout title="お問い合わせ">
-  <div class="w-full min-h-[80vh]">
-    <form id="contact-form" class="sm:w-96 m-auto w-full px-4">
+  <div class="w-full min-h-[80vh] sm:w-96 m-auto px-4">
+    <p>
+      お問合せいただきありがとうございます。
+      <br />お仕事やご質問などございましたら、ご連絡お待ちしております。
+      <br />フォーム送信後、確認メールは送信されませんので、ご了承ください。
+    </p>
+    <form id="contact-form" class="mt-6" name="contact_form">
       <input type="hidden" name="contact_number" />
       <div>
         <label
@@ -47,10 +53,10 @@ import Layout from "@layouts/Layout.astro";
           rows="4"
           class="textarea textarea-bordered block w-full mt-1"></textarea>
       </div>
-
-      <button class="btn btn-primary mt-10">送信</button>
+      <button id="submitButton" class="btn btn-primary mt-4">送信</button>
     </form>
   </div>
+  <Alert />
 </Layout>
 <script
   is:inline
@@ -75,15 +81,29 @@ import Layout from "@layouts/Layout.astro";
       .getElementById("contact-form")
       .addEventListener("submit", function (event) {
         event.preventDefault();
+        const submitButton = document.getElementById("submitButton");
+        submitButton.classList.add("loading");
         // generate a five digit number for the contact_number variable
         this.contact_number.value = (Math.random() * 100000) | 0;
         // these IDs from the previous steps
         emailjs.sendForm("service_i4hpsnb", "template_vcdbm8l", this).then(
           function () {
-            console.log("SUCCESS!");
+            const successAlert = document.getElementById("success-alert");
+            successAlert.classList.remove("hidden");
+            submitButton.classList.remove("loading");
+            this.contact_form.reset();
+            setTimeout(function () {
+              successAlert.classList.add("hidden");
+            }, 5000);
           },
           function (error) {
+            const errorAlert = document.getElementById("error-alert");
+            errorAlert.classList.remove("hidden");
+            submitButton.classList.remove("loading");
             console.log("FAILED...", error);
+            setTimeout(function () {
+              successAlert.classList.add("hidden");
+            }, 5000);
           },
         );
       });
