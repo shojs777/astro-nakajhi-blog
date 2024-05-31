@@ -42,7 +42,11 @@ const isRecentPost =
         更新日：{format(updatedAt, "yyyy/MM/dd")}
       </div>
       <div class="card-actions justify-end">
-        {tags.map((tag) => <div class="badge badge-outline">{tag}</div>)}
+        {
+          tags?.map(
+            (tag) => tag && <div class="badge badge-outline">{tag}</div>,
+          )
+        }
       </div>
     </div>
   </a>

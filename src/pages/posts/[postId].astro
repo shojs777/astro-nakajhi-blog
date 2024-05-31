@@ -20,11 +20,11 @@ type Props = {
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetchPostsData();
   const duplicatedTagList = res.data
-    .map(({ values }) => values.tag as string[])
+    ?.map(({ values }) => values.tag as string[])
     .flatMap((tagList) => tagList);
   const tagList = [...new Set(duplicatedTagList)];
 
-  return res.data.map(({ values, attributes }) => ({
+  return res.data?.map(({ values, attributes }) => ({
     params: { postId: attributes.publicUid },
     props: {
       title: values.title,
@@ -39,6 +39,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { title, createdAt, updatedAt, img, tags, body, tagList } = Astro.props;
+console.log(tags);
 ---
 
 <Layout title="記事詳細">
@@ -82,9 +83,10 @@ const { title, createdAt, updatedAt, img, tags, body, tagList } = Astro.props;
         </div>
         <ul class="mt-2">
           {
-            tags.map((tag) => (
-              <li class="badge badge-outline badge-lg ">{tag}</li>
-            ))
+            tags?.map(
+              (tag) =>
+                tag && <li class="badge badge-outline badge-lg ">{tag}</li>,
+            )
           }
         </ul>
         <div class="mt-16" set:html={body} />

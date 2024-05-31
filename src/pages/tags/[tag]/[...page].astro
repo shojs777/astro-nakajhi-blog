@@ -10,13 +10,13 @@ export const getStaticPaths = (async ({ paginate }) => {
   const res = await fetchPostsData();
   const allPosts = res.data;
   const duplicatedTagList = allPosts
-    .map(({ values }) => values.tag as string[])
+    ?.map(({ values }) => values.tag as string[])
     .flatMap((tagList) => tagList);
   const uniqueTagList = [...new Set(duplicatedTagList)];
 
   return uniqueTagList.flatMap((tag) => {
-    const filteredPosts = allPosts.filter((post) =>
-      (post.values.tag as string[])?.includes(tag),
+    const filteredPosts = allPosts.filter(
+      (post) => post.values.tag && (post.values.tag as string[])?.includes(tag),
     );
     return paginate(filteredPosts, {
       params: {
@@ -57,7 +57,7 @@ const isBackDisabled = page.url.prev ? false : true;
         class="w-full flex flex-wrap flex-row bg-gray-200 xl:p-6 gap-4 2xl:gap-8 md:gap-4 p-5"
       >
         {
-          page.data.map(({ values, attributes }) => (
+          page.data?.map(({ values, attributes }) => (
             <PostCard
               title={values.title as string}
               imgUrl={values.image as string}

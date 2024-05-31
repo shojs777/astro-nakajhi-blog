@@ -19,8 +19,8 @@ const isBackDisabled = page.url.prev ? false : true;
 //   page.data.map(({ values }) => values.tag).flatMap((tagList) => tagList),
 // );
 const duplicatedTagList = page.data
-  .map(({ values }) => values.tag as string[])
-  .flatMap((tagList) => tagList);
+  ?.map(({ values }) => values.tag as string[])
+  ?.flatMap((tagList) => tagList);
 
 const uniqueTagList = [...new Set(duplicatedTagList)];
 ---
@@ -41,7 +41,7 @@ const uniqueTagList = [...new Set(duplicatedTagList)];
         class="w-full flex flex-wrap flex-row bg-gray-200 xl:p-6 gap-4 2xl:gap-8 md:gap-4 p-5"
       >
         {
-          page.data.map(({ values, attributes }) => (
+          page.data?.map(({ values, attributes }) => (
             <PostCard
               title={values.title as string}
               imgUrl={values.image as string}
