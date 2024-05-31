@@ -11,9 +11,11 @@ export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = res.data;
   const duplicatedTagList = allPosts
     ?.map(({ values }) => values.tag as string[])
-    .flatMap((tagList) => tagList);
+    ?.flatMap((tagList) => tagList);
   const uniqueTagList = [...new Set(duplicatedTagList)];
-
+  if (!uniqueTagList.length) {
+    return [];
+  }
   return uniqueTagList.flatMap((tag) => {
     const filteredPosts = allPosts.filter(
       (post) => post.values.tag && (post.values.tag as string[])?.includes(tag),

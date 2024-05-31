@@ -23,7 +23,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
     ?.map(({ values }) => values.tag as string[])
     .flatMap((tagList) => tagList);
   const tagList = [...new Set(duplicatedTagList)];
-
+  if (!tagList.length) {
+    return res.data?.map(({ values, attributes }) => ({
+      params: { postId: attributes.publicUid },
+      props: {
+        title: values.title,
+        createdAt: attributes.createdAt,
+        updatedAt: attributes.updatedAt,
+        img: values.image,
+        body: values.body,
+      },
+    }));
+  }
   return res.data?.map(({ values, attributes }) => ({
     params: { postId: attributes.publicUid },
     props: {
@@ -39,7 +50,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { title, createdAt, updatedAt, img, tags, body, tagList } = Astro.props;
-console.log(tags);
 ---
 
 <Layout title="記事詳細">
