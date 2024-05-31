@@ -20,6 +20,9 @@ export const getStaticPaths = (async ({ paginate }) => {
     const filteredPosts = allPosts.filter(
       (post) => post.values.tag && (post.values.tag as string[])?.includes(tag),
     );
+    if (!filteredPosts.length) {
+      return [];
+    }
     return paginate(filteredPosts, {
       params: {
         tag,
